@@ -1,6 +1,8 @@
 #include <string>
+#include <sstream>
 #include <map>
 using std::string;
+using std::stringstream;
 using std::map;
 
 #include "Console.hpp"
@@ -20,7 +22,10 @@ string Console::command(const string& command)
 {
     if (command_map_.find(command) != command_map_.end())
         return command_map_[command](command);
-    return command;
+
+    stringstream ss;
+    ss << command << ": command not found";
+    return ss.str();
 }
 
 } // namespace kata
