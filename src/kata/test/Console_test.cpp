@@ -7,7 +7,7 @@ TEST_GROUP(KataGroup)
 {
 };
 
-TEST(KataGroup, isCbrsCell)
+TEST(KataGroup, helpTest)
 {
     CHECK_EQUAL("Kata usage:", Console::command("help"));
     CHECK_EQUAL("foo: command not found", Console::command("foo"));
