@@ -41,6 +41,7 @@ AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
     src/kata/Makefile
+    src/lib-core/Makefile
 ])
 
 AC_OUTPUT
