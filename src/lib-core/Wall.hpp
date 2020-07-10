@@ -14,9 +14,11 @@ class Wall
 {
 public:
     Wall(std::shared_ptr<User> user);
-    const std::vector< std::pair<User, Post> >      get() const; 
+    const std::vector< std::pair< std::shared_ptr<User>, std::shared_ptr <Post> > >
+                                                    get() const;
 private:
-    const std::vector< std::pair<User, Post> >      content_; 
+    const std::vector< std::pair< std::shared_ptr<User>, std::shared_ptr <Post> > >
+                                                    content_;
 };
 
 } // namespace kata

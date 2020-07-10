@@ -13,7 +13,7 @@ Wall::Wall(shared_ptr<User> /* user */)
 {
 }
 
-const vector<pair<User, Post>> Wall::get() const
+const vector< pair< shared_ptr<User>, shared_ptr<Post> > > Wall::get() const
 {
     return content_;
 }
