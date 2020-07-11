@@ -33,7 +33,6 @@ AC_SUBST([GCC_FLAGS_GLOBAL], ["\
           -Wpedantic \
           -Werror \
           -Wformat=2 \
-          -Wformat-signedness \
           -O2 \
 		  -DNDEBUG"])
 
