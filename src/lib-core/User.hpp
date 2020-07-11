@@ -5,12 +5,13 @@
 #include <string>
 #include <vector>
 
+#include "Wall.hpp"
+
 namespace ddi {
 namespace kata {
 
 class Post;
-class Wall;
-class User
+class User: public std::enable_shared_from_this<User>
 {
 public:
     /**
@@ -51,9 +52,9 @@ public:
     /**
      * @brief get user's wall
      * 
-     * @return std::shared_ptr< Wall >      user's wall
+     * @return Wall::type .                 user's wall
      */
-    std::shared_ptr< Wall >                 wall();
+    Wall::map                               wall();
 private:
     const std::string                       name_;
     std::vector< std::shared_ptr<Post> >    timeline_;

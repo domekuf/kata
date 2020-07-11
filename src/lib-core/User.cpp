@@ -2,6 +2,8 @@
 using std::shared_ptr;
 #include <string>
 using std::string;
+#include <utility>
+using std::pair;
 #include <vector>
 using std::vector;
 
@@ -12,8 +14,11 @@ using std::vector;
 namespace ddi {
 namespace kata {
 
-User::User(const string& /* name */)
+User::User(const string& name)
+: name_(name)
 {
+    timeline_ = {};
+    followed_ = {};
 }
 
 const string& User::name() const
@@ -21,12 +26,15 @@ const string& User::name() const
     return name_;
 }
 
-void User::follows(shared_ptr<User> /* user */)
+void User::follows(shared_ptr<User> user)
 {
+    followed_.push_back(user);
 }
 
-void User::post(const string& /* content */)
+void User::post(const string& content)
 {
+    shared_ptr<Post> post(new Post(content));
+    timeline_.insert(timeline_.begin(), post);
 }
 
 vector<shared_ptr<Post>> User::timeline()
@@ -34,9 +42,18 @@ vector<shared_ptr<Post>> User::timeline()
     return timeline_;
 }
 
-shared_ptr<Wall> User::wall()
+Wall::map User::wall()
 {
-    return nullptr;
+    Wall::map wall = {};
+    for (const shared_ptr<User> user : followed_) {
+        for (const shared_ptr<Post> post : user->timeline()) {
+            wall[post->created()].push_back({user, post});
+        }
+    }
+    for (const shared_ptr<Post> post : timeline()) {
+        wall[post->created()].push_back({shared_from_this(), post});
+    }
+    return wall;
 }
 
 } // namespace kata
