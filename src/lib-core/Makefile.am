@@ -75,6 +75,7 @@ test_test_libcore_LDADD = \
 test_test_libcore_SOURCES = \
 	test/AllTests.cpp \
 	test/Core_test.cpp \
+	test/Post_test.cpp \
 	test/User_test.cpp \
 	$(libcore_hpp) \
 	$(libcore_la_SOURCES)
