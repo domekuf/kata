@@ -9,8 +9,9 @@ using std::string;
 namespace ddi {
 namespace kata {
 
-Post::Post(const string& /* content */)
-: created_(time(nullptr))
+Post::Post(const string& content)
+: content_(content)
+, created_(time(nullptr))
 {
 }
 
