@@ -1,8 +1,6 @@
 #include <ctime>
 using std::time;
 using std::time_t;
-#include <memory>
-using std::shared_ptr;
 
 #include <Post.hpp>
 using ddi::kata::Post;
