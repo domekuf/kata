@@ -31,19 +31,30 @@ pkginclude_HEADERS = \
 	$(libcore_hpp)
 
 libcore_la_LDFLAGS = \
+    $(LIBODB_LIBS) \
+    $(LIBODB_SQL3_LIBS) \
+    $(LIBODB_BOOST_LIBS) \
+    $(SQL3_LIBS) \
 	-shared \
     -version-info 1:0:0
 
 libcore_la_LIBADD =
 
 libcore_la_CXXFLAGS = \
+    $(LIBODB_CFLAGS) \
+    $(LIBODB_SQL3_CFLAGS) \
+    $(SQL3_CFLAGS) \
 	$(GCC_FLAGS) \
     $(AM_CXXFLAGS)
 
-libcore_hpp = \
-	Core.hpp \
+kata_odb_hpp = \
+	Object.hpp \
 	Post.hpp \
-	User.hpp \
+	User.hpp
+
+libcore_hpp = \
+	$(kata_odb_hpp) \
+	Core.hpp \
 	Wall.hpp
 
 libcore_la_SOURCES = \
@@ -52,6 +63,63 @@ libcore_la_SOURCES = \
 	Post.cpp \
 	User.cpp \
 	Wall.cpp
+
+kata_odb_headers = \
+    kata-odb.hxx \
+    kata-odb.ixx
+
+kata_odb_src = \
+	$(kata_odb_headers) \
+    kata-odb.cxx \
+    kata.sql
+
+kata_schema_src = \
+    kata-schema.cxx
+
+BUILT_SOURCES = \
+	$(kata_odb_src) \
+	$(kata_schema_src)
+
+MOSTLYCLEANFILES = \
+	$(kata_odb_src) \
+	$(kata_schema_src) \
+	kata.stamp
+
+ODB = odb
+
+kata.stamp: $(kata_odb_hpp)
+	@rm -f kata.tmp
+	@touch kata.tmp
+	$(ODB) --database sqlite \
+		--schema-name kata \
+		--generate-query \
+		--generate-prepared \
+		--generate-session \
+		--generate-schema \
+		--default-pointer std::shared_ptr \
+		--schema-format separate \
+		--schema-format sql \
+		--at-once \
+		--input-name kata \
+		--std c++11 \
+		--warn-hard \
+		--index-suffix _idx \
+		--sql-name-case upper \
+		--show-sloc \
+		--sloc-limit 10000 \
+		--sqlite-override-null \
+		-I. \
+		--hxx-prologue '#include "Core.hpp"' \
+		--profile boost/date-time \
+		--profile boost/optional \
+		$^
+	@mv -f kata.tmp $@
+
+$(kata_odb_src) $(kata_schema_src): kata.stamp
+	@if test -f $@; then :; else \
+	    rm -r kata.stamp; \
+	    $(MAKE) $(AM_MAKEFILES) kata.stamp; \
+	fi
 
 # unit tests
 

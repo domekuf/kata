@@ -5,13 +5,18 @@
 #include <string>
 #include <vector>
 
+#include <odb/core.hxx>
+
+#include "Object.hpp"
 #include "Wall.hpp"
 
 namespace ddi {
 namespace kata {
 
 class Post;
-class User: public std::enable_shared_from_this<User>
+
+PRAGMA_DB(object optimistic)
+class User: public std::enable_shared_from_this<User>, public Object
 {
 public:
     /**
@@ -56,6 +61,8 @@ public:
      */
     Wall::map                               wall();
 private:
+    friend class odb::access;
+    User() {}
     const std::string                       name_;
     std::vector< std::shared_ptr<Post> >    timeline_;
     std::vector< std::shared_ptr<User> >    followed_;

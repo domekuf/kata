@@ -3,10 +3,15 @@
 #include <ctime>
 #include <string>
 
+#include <odb/core.hxx>
+
+#include "Object.hpp"
+
 namespace ddi {
 namespace kata {
 
-class Post
+PRAGMA_DB(object optimistic)
+class Post: public Object
 {
 public:
     /**
@@ -30,8 +35,10 @@ public:
      */
     std::time_t             created() const;
 private:
+    friend class odb::access;
+    Post() {}
     const std::string       content_;
-    const std::time_t       created_;
+    std::time_t             created_;
 };
 
 } // namespace kata
