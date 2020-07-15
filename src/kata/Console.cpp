@@ -23,7 +23,9 @@ string Console::help(const string&)
     return
     "Kata usage:\n"
     "   <username>: read user's wall\n"
-    "   <username> -> <message> : post on user's wall\n";
+    "   <username> -> <message> : post on user's wall\n"
+    "   <first> follows <second> : first user starts following second one\n"
+    "   <username> wall : get user's wall\n";
 }
 
 string Console::command(const string& command)
