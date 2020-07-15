@@ -37,6 +37,7 @@ kata_DEPENDENCIES= \
 kata_CXXFLAGS= \
 	$(LIBODB_CFLAGS) \
 	$(LIBODB_SQL3_CFLAGS) \
+    $(AM_CXXFLAGS) \
 	-I$(top_srcdir)/src/lib-core \
 	-I$(top_srcdir)/src/lib-parser
 

@@ -27,6 +27,13 @@ AM_CPPFLAGS = \
 
 pkglib_LTLIBRARIES = \
 	libcore.la
+
+noinst_LIBRARIES = \
+    libcoreschema.a
+
+libcoreschema_a_SOURCES = \
+	$(kata_schema_src)
+
 pkginclude_HEADERS = \
 	$(libcore_hpp)
 
