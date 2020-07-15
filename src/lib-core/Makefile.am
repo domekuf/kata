@@ -56,6 +56,7 @@ kata_odb_hpp = \
 
 libcore_hpp = \
 	$(kata_odb_hpp) \
+	TimeAgo.hpp \
 	Core.hpp \
 	Wall.hpp
 
@@ -63,6 +64,7 @@ libcore_la_SOURCES = \
 	$(libcore_hpp) \
 	Core.cpp \
 	Post.cpp \
+	TimeAgo.cpp \
 	User.cpp \
 	Wall.cpp
 
@@ -144,6 +146,7 @@ test_test_libcore_SOURCES = \
 	test/AllTests.cpp \
 	test/Core_test.cpp \
 	test/Post_test.cpp \
+	test/TimeAgo_test.cpp \
 	test/User_test.cpp \
 	$(libcore_hpp) \
 	$(libcore_la_SOURCES)

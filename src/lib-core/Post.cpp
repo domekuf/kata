@@ -7,6 +7,8 @@ using std::time_t;
 using std::string;
 using std::stringstream;
 
+#include "TimeAgo.hpp"
+
 #include "Post.hpp"
 namespace ddi {
 namespace kata {
@@ -29,21 +31,7 @@ time_t Post::created() const
 
 const string Post::createdHuman() const
 {
-    const time_t now = time(nullptr);
-    unsigned gap = now - created_;
-    stringstream out;
-    if (gap < 60) {
-        out << gap << " seconds ago";
-        return out.str();
-    }
-    gap = (gap/60);
-    if (gap < 60) {
-        out << gap << " minutes ago";
-        return out.str();
-    } else {
-        out << gap/60 << " hours ago";
-        return out.str();
-    }
+    return TimeAgo::human(time(nullptr), created_);
 }
 
 } // namespace kata
