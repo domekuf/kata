@@ -25,6 +25,10 @@ test "$GCC" == yes || AC_MSG_ERROR([GCC is required])
 CC="$CC -m64"
 
 PKG_CHECK_MODULES([CPPUTEST], [cpputest])
+PKG_CHECK_MODULES([LIBODB], [libodb])
+PKG_CHECK_MODULES([LIBODB_SQL3], [libodb-sqlite])
+PKG_CHECK_MODULES([LIBODB_BOOST], [libodb-boost])
+PKG_CHECK_MODULES([SQL3], [sqlite3])
 
 AC_SUBST([GCC_FLAGS_GLOBAL], ["\
           -g \
@@ -39,9 +43,9 @@ AC_SUBST([GCC_FLAGS_GLOBAL], ["\
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
-    src/kata/Makefile
-    src/lib-core/Makefile
     src/lib-parser/Makefile
+    src/lib-core/Makefile
+    src/kata/Makefile
 ])
 
 AC_OUTPUT

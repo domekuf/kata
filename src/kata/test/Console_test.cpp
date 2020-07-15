@@ -9,6 +9,5 @@ TEST_GROUP(KataGroup)
 
 TEST(KataGroup, helpTest)
 {
-    CHECK_EQUAL("Kata usage:", Console::command("help"));
-    CHECK_EQUAL("foo: command not found", Console::command("foo"));
+    CHECK_EQUAL("User not found: foo", Console::command("foo"));
 }

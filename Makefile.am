@@ -22,26 +22,4 @@ LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status libtool
 
-# DISTCHECK_CONFIGURE_FLAGS = --with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemdir)
-# 
-#clean-local:
-#	$(RM) kata.pc
-#	$(RM) kata.conf
-#
-#pkgconfdir = \
-#	$(libdir)/pkgconfig
-#
-#pkgconf_DATA = \
-#	kata.pc
-#
-#ldsoconfdir = \
-#	$(sysconfdir)/ld.so.conf.d
-#
-#ldsoconf_DATA = \
-#	kata.conf
-#
-#EXTRA_DIST = \
-#	kata.pc.in \
-#	kata.conf.in
-
 SUBDIRS = src

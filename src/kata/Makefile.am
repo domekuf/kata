@@ -31,10 +31,32 @@ kata_SOURCES = \
 	$(kata_CLASSES) \
 	kata.cpp
 
+kata_DEPENDENCIES= \
+	$(top_builddir)/src/lib-core/libcoreschema.a
+
+kata_CXXFLAGS= \
+	$(LIBODB_CFLAGS) \
+	$(LIBODB_SQL3_CFLAGS) \
+	-I$(top_srcdir)/src/lib-core \
+	-I$(top_srcdir)/src/lib-parser
+
+kata_LDFLAGS= \
+	$(LIBODB_LIBS) \
+	$(LIBODB_SQL3_LIBS) \
+	-Wl,--whole-archive,$(top_builddir)/src/lib-core/libcoreschema.a,--no-whole-archive
+
+kata_LDADD= \
+	$(top_builddir)/src/lib-core/libcore.la \
+	$(top_builddir)/src/lib-parser/libparser.la
+
 # unit tests
 
 test_test_kata_LDADD = \
+	$(kata_LDADD) \
 	$(CPPUTEST_LIBS)
+
+test_test_kata_CXXFLAGS = \
+	$(kata_CXXFLAGS)
 
 check_PROGRAMS = \
 	test/test_kata
