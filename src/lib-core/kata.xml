@@ -1,0 +1,67 @@
+<changelog xmlns="http://www.codesynthesis.com/xmlns/odb/changelog" database="sqlite" schema-name="kata" version="1">
+  <model version="1">
+    <table name="POST" kind="object">
+      <column name="KEY" type="INTEGER" null="true"/>
+      <column name="VERSION" type="INTEGER" null="true"/>
+      <column name="CONTENT" type="TEXT" null="true"/>
+      <column name="CREATED" type="INTEGER" null="true"/>
+      <primary-key auto="true">
+        <column name="KEY"/>
+      </primary-key>
+    </table>
+    <table name="USER" kind="object">
+      <column name="KEY" type="INTEGER" null="true"/>
+      <column name="VERSION" type="INTEGER" null="true"/>
+      <column name="NAME" type="TEXT" null="true"/>
+      <primary-key auto="true">
+        <column name="KEY"/>
+      </primary-key>
+    </table>
+    <table name="USER_TIMELINE" kind="container">
+      <column name="OBJECT_ID" type="INTEGER" null="true"/>
+      <column name="INDEX" type="INTEGER" null="true"/>
+      <column name="VALUE" type="INTEGER" null="true"/>
+      <foreign-key name="OBJECT_ID_FK" on-delete="CASCADE">
+        <column name="OBJECT_ID"/>
+        <references table="USER">
+          <column name="KEY"/>
+        </references>
+      </foreign-key>
+      <index name="USER_TIMELINE_OBJECT_ID_IDX">
+        <column name="OBJECT_ID"/>
+      </index>
+      <index name="USER_TIMELINE_INDEX_IDX">
+        <column name="INDEX"/>
+      </index>
+      <foreign-key name="VALUE_FK" deferrable="DEFERRED">
+        <column name="VALUE"/>
+        <references table="POST">
+          <column name="KEY"/>
+        </references>
+      </foreign-key>
+    </table>
+    <table name="USER_FOLLOWED" kind="container">
+      <column name="OBJECT_ID" type="INTEGER" null="true"/>
+      <column name="INDEX" type="INTEGER" null="true"/>
+      <column name="VALUE" type="INTEGER" null="true"/>
+      <foreign-key name="OBJECT_ID_FK" on-delete="CASCADE">
+        <column name="OBJECT_ID"/>
+        <references table="USER">
+          <column name="KEY"/>
+        </references>
+      </foreign-key>
+      <index name="USER_FOLLOWED_OBJECT_ID_IDX">
+        <column name="OBJECT_ID"/>
+      </index>
+      <index name="USER_FOLLOWED_INDEX_IDX">
+        <column name="INDEX"/>
+      </index>
+      <foreign-key name="VALUE_FK" deferrable="DEFERRED">
+        <column name="VALUE"/>
+        <references table="USER">
+          <column name="KEY"/>
+        </references>
+      </foreign-key>
+    </table>
+  </model>
+</changelog>

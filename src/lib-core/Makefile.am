@@ -57,6 +57,7 @@ libcore_la_CXXFLAGS = \
 	-I$(top_srcdir)/src/lib-parser
 
 kata_odb_hpp = \
+	Core.hpp \
 	Object.hpp \
 	Post.hpp \
 	User.hpp
@@ -64,11 +65,11 @@ kata_odb_hpp = \
 libcore_hpp = \
 	$(kata_odb_hpp) \
 	TimeAgo.hpp \
-	Core.hpp \
 	Wall.hpp
 
 libcore_la_SOURCES = \
 	$(libcore_hpp) \
+	kata-odb.cxx \
 	Core.cpp \
 	Post.cpp \
 	TimeAgo.cpp \

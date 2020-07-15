@@ -10,6 +10,8 @@ using std::runtime_error;
 #include <sstream>
 using std::string;
 using std::stringstream;
+#include <vector>
+using std::vector;
 
 #include <odb/core.hxx>
 #include <odb/database.hxx>
@@ -23,6 +25,7 @@ using odb::session;
 
 #include "kata-odb.hxx"
 #include <Phrase.hpp>
+#include <Post.hpp>
 #include <User.hpp>
 #include <Wall.hpp>
 
@@ -31,7 +34,6 @@ namespace ddi {
 namespace kata {
 
 string Core::db_file_ = "/tmp/kata.db";
-map<const string, const shared_ptr<User>> Core::user_map_;
 
 const string& Core::dbFile()
 {
@@ -40,11 +42,6 @@ const string& Core::dbFile()
 
 void Core::migration()
 {
-    user_map_ = {
-        {"Alice", shared_ptr<User>(new User("Alice"))},
-        {"Bob", shared_ptr<User>(new User("Bob"))},
-        {"Charlie", shared_ptr<User>(new User("Charlie"))}
-    };
 
     shared_ptr<database>   db(new odb::sqlite::database (db_file_, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE));
 
@@ -59,6 +56,12 @@ void Core::migration()
         // Create the schema and initalize the database.
         transaction trxn(db->begin());
         schema_catalog::create_schema(*db, schema_nm, false);
+        const shared_ptr<User> a(new User("Alice"));
+        db->persist(a);
+        const shared_ptr<User> b(new User("Bob"));
+        db->persist(b);
+        const shared_ptr<User> c(new User("Charlie"));
+        db->persist(c);
         trxn.commit();
     } else if (version < curr_version) {
         // Old schema (and data), migrate.
@@ -85,10 +88,14 @@ void Core::overrideDbFile(const std::string& dbf)
 
 shared_ptr<User> Core::findUser(const string& name)
 {
-    const auto uit = user_map_.find(name);
-    if (uit == user_map_.end())
-        return nullptr;
-    return uit->second;
+    typedef odb::query<User> query;
+    query query_name(query::name == name);
+    shared_ptr<database> db(new odb::sqlite::database (db_file_, SQLITE_OPEN_READWRITE));
+    session sess;
+    transaction trxn(db->begin());
+    shared_ptr<User> u = db->query_one<User>(query_name);
+    trxn.commit();
+    return u;
 }
 
 string Core::process(const shared_ptr<Phrase> p)
@@ -110,7 +117,15 @@ string Core::process(const shared_ptr<Phrase> p)
         case Phrase::POST :
             if (p->object()) {
                 const string& obj = p->object().get();
-                user->post(obj);
+                const shared_ptr<Post> p = user->post(obj);
+                {
+                    shared_ptr<database> db(new odb::sqlite::database (db_file_, SQLITE_OPEN_READWRITE));
+                    session s;
+                    transaction trxn(db->begin());
+                    db->persist(p);
+                    db->update(user);
+                    trxn.commit();
+                }
                 out << subject << " posted: " << obj;
             } else {
                 out << "No content set";
@@ -126,6 +141,13 @@ string Core::process(const shared_ptr<Phrase> p)
                     return out.str();
                 }
                 user->follows(obj_user);
+                {
+                    shared_ptr<database> db(new odb::sqlite::database (db_file_, SQLITE_OPEN_READWRITE));
+                    session s;
+                    transaction trxn(db->begin());
+                    db->update(user);
+                    trxn.commit();
+                }
                 out << subject << " is now following " << obj;
             } else {
                 out << "No user to follow";

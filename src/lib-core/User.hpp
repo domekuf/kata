@@ -45,7 +45,7 @@ public:
      * 
      * @param content                       post's content
      */
-    void                                    post(const std::string& content);
+    const std::shared_ptr<Post>             post(const std::string& content);
 
     /**
      * @brief get user's timeline

@@ -50,9 +50,6 @@ public:
 private:
     static std::string              db_file_;
 
-    static std::map<const std::string, const std::shared_ptr<User>>
-                                    user_map_;
-
     static std::shared_ptr<User>    findUser(const std::string& user);
 };
 

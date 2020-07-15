@@ -31,10 +31,11 @@ void User::follows(shared_ptr<User> user)
     followed_.push_back(user);
 }
 
-void User::post(const string& content)
+const shared_ptr<Post> User::post(const string& content)
 {
-    shared_ptr<Post> post(new Post(content));
+    const shared_ptr<Post> post(new Post(content));
     timeline_.insert(timeline_.begin(), post);
+    return post;
 }
 
 vector<shared_ptr<Post>> User::timeline()
