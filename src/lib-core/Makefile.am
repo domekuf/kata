@@ -38,14 +38,16 @@ libcore_la_LDFLAGS = \
 	-shared \
     -version-info 1:0:0
 
-libcore_la_LIBADD =
+libcore_la_LIBADD = \
+	$(top_builddir)/src/lib-parser/libparser.la
 
 libcore_la_CXXFLAGS = \
     $(LIBODB_CFLAGS) \
     $(LIBODB_SQL3_CFLAGS) \
     $(SQL3_CFLAGS) \
 	$(GCC_FLAGS) \
-    $(AM_CXXFLAGS)
+    $(AM_CXXFLAGS) \
+	-I$(top_srcdir)/src/lib-parser
 
 kata_odb_hpp = \
 	Object.hpp \
@@ -129,7 +131,6 @@ check_PROGRAMS = \
 TESTS = \
 	$(check_PROGRAMS)
 
-# Adding /src/lib-kata to use macros.hpp
 test_test_libcore_CXXFLAGS = \
 	$(libcore_la_CXXFLAGS)
 

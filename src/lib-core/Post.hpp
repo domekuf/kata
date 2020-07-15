@@ -34,6 +34,13 @@ public:
      * @return std::time_t  post's creation datetime
      */
     std::time_t             created() const;
+
+    /**
+     * @brief get post's creation date as a human readable string
+     *
+     * @return const std::string&
+     */
+    const std::string       createdHuman() const;
 private:
     friend class odb::access;
     Post() {}

@@ -6,3 +6,6 @@
 *.la
 test/.dirstamp
 test/test_*
+kata-odb.*
+kata-schema.cxx
+kata.stamp
