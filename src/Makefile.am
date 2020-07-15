@@ -18,4 +18,4 @@
 
 # Subdirs follows dependencies order
 SUBDIRS = \
-	kata lib-core lib-parser
+	kata lib-parser lib-core

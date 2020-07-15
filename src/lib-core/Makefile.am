@@ -112,7 +112,6 @@ kata.stamp: $(kata_odb_hpp)
 		--sqlite-override-null \
 		-I. \
 		--hxx-prologue '#include "Core.hpp"' \
-		--profile boost/date-time \
 		--profile boost/optional \
 		$^
 	@mv -f kata.tmp $@
