@@ -34,7 +34,7 @@ libparser_la_LDFLAGS = \
 	-shared \
     -version-info 1:0:0
 
-libparser_la_LIBADD =
+libparser_la_LIBADD = -lboost_regex
 
 libparser_la_CXXFLAGS = \
 	$(GCC_FLAGS) \

@@ -1,9 +1,9 @@
 #include <map>
 using std::map;
-#include <regex>
-using std::regex;
-using std::regex_match;
-using std::smatch;
+#include <boost/regex.hpp>
+using boost::regex;
+using boost::regex_match;
+using boost::smatch;
 #include <string>
 using std::string;
 #include <boost/optional.hpp>
@@ -22,14 +22,14 @@ const map<string, Phrase::verb> Phrase::verb_map_ = {
 
 Phrase::Phrase(const string& command)
 {
-    regex re("(.*)( +(->|follows|wall) +?(.*)?)|(.*)", regex::extended);
-    //        ^--^|  ^---------------^   ^--^ | ^--^
-    //            ^---------------------------^
-    //        1      3                   4      5
+    regex re("(.*)( +(->|follows|wall)( +(.*)?)?)|(.*)", regex::extended);
+    //        ^--^|  ^---------------^   ^--^   | ^--^
+    //            ^-----------------------------^
+    //        1      3                   5        6
     // $1: subject
     // $3: predicate
-    // $4: direct object
-    // $5: subject when no verb
+    // $5: direct object
+    // $6: subject when no verb
     smatch sm;
     if (regex_match(command, sm, re)) {
         unsigned c = 0;
@@ -42,11 +42,11 @@ Phrase::Phrase(const string& command)
                 if (verb_map_.find(s) != verb_map_.end())
                     predicate_ = verb_map_.at(s);
                 break;
-                case 4:
+                case 5:
                 if ("" != s)
                     object_ = s;
                 break;
-                case 5:
+                case 6:
                 if ("" != s)
                     subject_ = s;
                 break;

@@ -49,23 +49,3 @@ kata_LDFLAGS= \
 kata_LDADD= \
 	$(top_builddir)/src/lib-core/libcore.la \
 	$(top_builddir)/src/lib-parser/libparser.la
-
-# unit tests
-
-test_test_kata_LDADD = \
-	$(kata_LDADD) \
-	$(CPPUTEST_LIBS)
-
-test_test_kata_CXXFLAGS = \
-	$(kata_CXXFLAGS)
-
-check_PROGRAMS = \
-	test/test_kata
-
-TESTS = \
-	$(check_PROGRAMS)
-
-test_test_kata_SOURCES = \
-	$(kata_CLASSES) \
-	test/AllTests.cpp \
-	test/Console_test.cpp

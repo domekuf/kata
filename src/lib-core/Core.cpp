@@ -89,11 +89,17 @@ void Core::overrideDbFile(const std::string& dbf)
 shared_ptr<User> Core::findUser(const string& name)
 {
     typedef odb::query<User> query;
+    typedef odb::result<User> result;
     query query_name(query::name == name);
     shared_ptr<database> db(new odb::sqlite::database (db_file_, SQLITE_OPEN_READWRITE));
     session sess;
     transaction trxn(db->begin());
-    shared_ptr<User> u = db->query_one<User>(query_name);
+    shared_ptr<User> u = nullptr;
+    result r = db->query<User>(query_name);
+    for (auto it = r.begin(); it != r.end(); ++it) {
+        u = it.load();
+        break;
+    }
     trxn.commit();
     return u;
 }
